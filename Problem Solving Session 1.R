@@ -1,10 +1,6 @@
 #Cleaning/missing
 #type(data.frame)
 #data.frame(mtcars[,c(2:5)])
-#xyz<-c(1,2,3,4,NA)
-#is.na(xyz)
-#mean(xyz)
-#mean(xyz, na.rm=TRUE)
 # "_Data Visualization_(some tips)"
 library(ggplot2)
 library(ggpubr)#ggarrange()
