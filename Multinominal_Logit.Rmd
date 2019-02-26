@@ -1,0 +1,32 @@
+---
+title: "Logit"
+author: "LZ"
+date: "February 26, 2019"
+output: html_document
+---
+https://stats.idre.ucla.edu/r/dae/multinomial-logistic-regression/
+https://stats.idre.ucla.edu/r/dae/logit-regression/
+
+```{r}
+library(foreign)
+library(nnet)
+library(ggplot2)
+library(reshape2)
+ml <- read.dta("https://stats.idre.ucla.edu/stat/data/hsbdemo.dta")
+head(ml)
+levels(ml$prog)
+table(ml$ses, ml$prog)
+
+
+with(ml, do.call(rbind, tapply(write, prog, function(x) c(M = mean(x), SD = sd(x)))))
+
+ml$prog2 <- relevel(ml$prog, ref = "academic")
+
+test <- multinom(prog2 ~ ses + write, data = ml)
+#?multinom
+summary(test)
+z<-summary(test)$coefficients/summary(test)$standard.errors
+z
+(1 - pnorm(abs(z), 0, 1)) * 2
+exp(coef(test))
+head(pp <- fitted(test))
