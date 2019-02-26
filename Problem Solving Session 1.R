@@ -1,6 +1,3 @@
-#Cleaning/missing
-#type(data.frame)
-#data.frame(mtcars[,c(2:5)])
 # "_Data Visualization_(some tips)"
 library(ggplot2)
 library(ggpubr)#ggarrange()
