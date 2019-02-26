@@ -36,7 +36,7 @@ addmargins(table(test$default, as.numeric(test$predicted.risk >= 0.5)))
 
 286/(286+164)
 
-library(ROCR)
+library(ROCR) 
 pred = prediction(test$predicted.risk, test$default)
 as.numeric(performance(pred, "auc")@y.values)
 predictTrain = predict(modLog2, type="response")
