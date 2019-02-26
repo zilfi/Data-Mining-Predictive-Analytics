@@ -16,7 +16,7 @@ ggplot(ad, aes(x=TV, y=Sales))+
   geom_point(alpha=0.6, col="coral")+
   geom_smooth(method = "lm", se = FALSE)+
   geom_segment(aes(xend = TV, yend = predict(mod1)),alpha=0.2) 
-
+ 
 summary(mod1)
 #coef(mod1)
 min(resid(mod1))
