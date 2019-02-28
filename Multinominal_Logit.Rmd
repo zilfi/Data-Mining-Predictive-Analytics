@@ -5,7 +5,6 @@ date: "February 26, 2019"
 output: html_document
 ---
 https://stats.idre.ucla.edu/r/dae/multinomial-logistic-regression/
-https://stats.idre.ucla.edu/r/dae/logit-regression/
 
 ```{r}
 library(foreign)
