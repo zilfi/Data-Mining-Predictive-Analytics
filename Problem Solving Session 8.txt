@@ -1,10 +1,14 @@
 #Why do we use square error instead of absolute value
-#Rotation
+#1. Rotation
 https://www.quora.com/Why-do-we-use-square-error-instead-of-absolute-value-when-we-calculate-R-2-in-regression-analysis
-#The squared difference has nicer mathematical properties; it's continuously differentiable (nice when you want to minimize it)
+#2. The squared difference has nicer mathematical properties; it's continuously differentiable (nice when you want to minimize it)
 One thing that has not been mentioned yet is uniqueness.
 The least squares approach always produces a single "best" answer if the matrix of explanatory variables is full rank. 
 When minimizing the sum of the absolute value of the residuals it is possible that there may be an infinite number of lines that all 
 have the same sum of absolute residuals (the minimum). 
-
+# 3. Outliers
 #We can do absolute values for regression; it's called L1 regression, and people certainly use it. It's certainly not as convenient as ordinary least squares (L2) regression, but that's what computers are for.
+
+http://www.johnmyleswhite.com/notebook/2013/03/22/using-norms-to-understand-linear-regression/
+http://www.bradthiessen.com/html5/docs/ols.pdf
+
