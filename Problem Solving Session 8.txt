@@ -11,4 +11,6 @@ have the same sum of absolute residuals (the minimum).
 
 http://www.johnmyleswhite.com/notebook/2013/03/22/using-norms-to-understand-linear-regression/
 http://www.bradthiessen.com/html5/docs/ols.pdf
+https://www.quora.com/Why-do-we-square-instead-of-using-the-absolute-value-when-calculating-variance-and-standard-deviation
+https://www.scribd.com/document/272147596/Why-Square-the-Difference-Instead-of-Taking-the-Absolute-Value-in-Standard-Deviation
 
