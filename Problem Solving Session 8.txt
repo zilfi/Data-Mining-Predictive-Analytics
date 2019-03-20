@@ -6,3 +6,5 @@ One thing that has not been mentioned yet is uniqueness.
 The least squares approach always produces a single "best" answer if the matrix of explanatory variables is full rank. 
 When minimizing the sum of the absolute value of the residuals it is possible that there may be an infinite number of lines that all 
 have the same sum of absolute residuals (the minimum). 
+
+#We can do absolute values for regression; it's called L1 regression, and people certainly use it. It's certainly not as convenient as ordinary least squares (L2) regression, but that's what computers are for.
