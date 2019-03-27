@@ -1,0 +1,165 @@
+---
+title: "PSS9"
+author: "LZ"
+date: "March 27, 2019"
+output: html_document
+---
+
+![](Capture1.PNG)
+![](Capture2.PNG)
+![](Capture3.PNG)
+![](Capture4.PNG)
+
+```{r}
+library(tidyverse)
+library(caret)
+library(glmnet)
+
+# Load the data
+data("Boston", package = "MASS")
+# Split the data into training and test set
+set.seed(123)
+training.samples <- Boston$medv %>%
+  createDataPartition(p = 0.8, list = FALSE)
+train.data  <- Boston[training.samples, ]
+test.data <- Boston[-training.samples, ]
+```
+
+
+```{r}
+# Predictor variables
+x <- model.matrix(medv~., train.data)[,-1]
+head(x)
+
+# Outcome variable
+y <- train.data$medv
+```
+
+
+```{r}
+m1<-glmnet(x, y, alpha = 0, lambda = 0)
+m1$a0
+m1$beta
+
+lm(y~.-medv, data =train.data)
+```
+
+
+```{r}
+xx <- rnorm(500)
+yy <- rnorm(500)
+mod1 <- lm(yy ~ xx) 
+
+xmm <- model.matrix(mod1)
+mod2 <- glmnet(xmm, yy, alpha=1, lambda=0)
+
+coef(mod1)
+coef(mod2)
+mod2$beta
+```
+
+```{r}
+ridge_tune_by_hand <- glmnet(x, y, alpha = 0, lambda = 0:1000)
+coef <- as.matrix(ridge_tune_by_hand$beta)
+```
+
+
+```{r}
+head(coef[, 2:5])
+plot(ridge_tune_by_hand, label = TRUE)
+plot (ridge_tune_by_hand, xvar = "lambda")
+```
+
+
+
+```{r}
+
+# Find the best lambda using cross-validation
+set.seed(123) 
+cv <- cv.glmnet(x, y, alpha = 0)
+plot(cv)
+# Display the best lambda value
+cv$lambda.min
+cv$lambda.1se
+# Fit the final model on the training data
+
+model <- glmnet(x, y, alpha = 0, lambda = cv$lambda.min)
+# Display regression coefficients
+coef(model)
+# Make predictions on the test data
+x.test <- model.matrix(medv ~., test.data)[,-1]
+predictions <- model %>% predict(x.test) %>% as.vector()
+# Model performance metrics
+data.frame(
+  RMSE = RMSE(predictions, test.data$medv),
+  Rsquare = R2(predictions, test.data$medv)
+)
+
+##LASSO
+
+# By hand
+
+lasso1 <- glmnet(x,y, lambda = seq(0, 10, by = 0.1), alpha = 1)
+plot(lasso1, xvar = "lambda")
+plot(lasso1, xvar = "dev")
+
+#print(lasso1)[1:5,]
+
+```
+
+```{r}
+# Find the best lambda using cross-validation
+set.seed(123) 
+cvl <- cv.glmnet(x, y, alpha = 1)
+plot(cvl)
+# Display the best lambda value
+cvl$lambda.min
+cvl$lambda.1se
+# Fit the final model on the training data
+model <- glmnet(x, y, alpha = 1, lambda = cvl$lambda.min)
+# Dsiplay regression coefficients
+coef(model)
+
+# Make predictions on the test data
+x.test <- model.matrix(medv ~., test.data)[,-1]
+predictions <- model %>% predict(x.test) %>% as.vector()
+# Model performance metrics
+data.frame(
+  RMSE = RMSE(predictions, test.data$medv),
+  Rsquare = R2(predictions, test.data$medv)
+)
+# Build the model using the training set
+set.seed(123)
+model <- train(
+  medv ~., data = train.data, method = "glmnet",
+  trControl = trainControl("cv", number = 10),
+  tuneLength = 10
+)
+# Best tuning parameter
+model$bestTune
+# Coefficient of the final model. You need
+# to specify the best lambda
+coef(model$finalModel, model$bestTune$lambda)
+# Make predictions on the test data
+x.test <- model.matrix(medv ~., test.data)[,-1]
+predictions <- model %>% predict(x.test)
+# Model performance metrics
+data.frame(
+  RMSE = RMSE(predictions, test.data$medv),
+  Rsquare = R2(predictions, test.data$medv)
+)
+
+cvel <- cv.glmnet(x,y, alpha =0.5)
+elnet <- glmnet(x,y, alpha = 0.5, lambda =1:25)
+par( mfrow = c(3,2))
+
+plot(cv)
+plot(ridge_tune_by_hand, xvar = "lambda")
+plot(cvl)
+plot(lasso1, xvar = "lambda")
+plot(cvel)
+plot(elnet, xvar = "lambda")
+
+
+
+```
